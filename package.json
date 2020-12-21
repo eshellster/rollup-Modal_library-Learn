@@ -1,0 +1,37 @@
+{
+  "name": "modal-edy",
+  "version": "1.0.0",
+  "description": "micro modal",
+  "main": "dist",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "types": "tsc --noEmit",
+    "lint": "eslint '*/**/*.{js,ts}'",
+    "finish": "yarn lint && yarn types"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eshellster/rollup-Modal_library-Learn.git"
+  },
+  "keywords": [
+    "modal",
+    "rollup"
+  ],
+  "author": "eshellster",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eshellster/rollup-Modal_library-Learn/issues"
+  },
+  "homepage": "https://github.com/eshellster/rollup-Modal_library-Learn#readme",
+  "devDependencies": {
+    "@types/eslint": "^7.2.6",
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-jsdoc": "^30.7.9",
+    "eslint-plugin-prettier": "^3.3.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
+  }
+}
