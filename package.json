@@ -2,7 +2,12 @@
   "name": "modal-edy",
   "version": "1.0.0",
   "description": "micro modal",
-  "main": "dist",
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "types": "tsc --noEmit",
@@ -24,6 +29,9 @@
   },
   "homepage": "https://github.com/eshellster/rollup-Modal_library-Learn#readme",
   "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
     "@types/eslint": "^7.2.6",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
