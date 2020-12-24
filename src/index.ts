@@ -46,7 +46,9 @@ export const ModalEdy = ((): ModalEdyType => {
          *
          * @param {Event} event - Event data
          */
-        open(event: Event) {}
+        open(event: Event) {
+            this.$modal?.classList.add(this.openClass);
+        }
     }
 
     let modal: ModalType;
