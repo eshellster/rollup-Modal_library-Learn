@@ -24,7 +24,6 @@
     "url": "https://github.com/eshellster/rollup-Modal_library-Learn/issues"
   },
   "homepage": "https://github.com/eshellster/rollup-Modal_library-Learn#readme",
-  
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",

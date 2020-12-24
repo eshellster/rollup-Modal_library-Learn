@@ -1,5 +1,10 @@
+import {ConfigType} from './types';
+
 export const ModalEdy = (() => {
-    const init = () => {};
+    const init = (config: ConfigType) => {
+        const options = {openAttribute: '', ...config};
+        const nodeList = document.querySelectorAll<HTMLElement>(`[${options.openAttribute}]`);
+    };
     return {init};
 })();
 
