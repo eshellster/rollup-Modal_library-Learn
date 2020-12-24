@@ -46,7 +46,7 @@ export const ModalEdy = ((): ModalEdyType => {
          *
          * @param {Event} event - Event data
          */
-        open(event: Event) {
+        open(event?: Event) {
             this.$modal?.classList.add(this.openClass);
         }
 
@@ -54,7 +54,7 @@ export const ModalEdy = ((): ModalEdyType => {
          *
          * @param {Event} event - Modal close
          */
-        close(event: Event) {}
+        close(event?: Event) {}
     }
 
     let modal: ModalType;
@@ -83,7 +83,7 @@ export const ModalEdy = ((): ModalEdyType => {
      * @param {ConfigType} config - madal window configur
      */
 
-    const init = (config: ConfigType) => {
+    const init = (config?: ConfigType) => {
         const options = {openAttribute: ATTRIBUTES.OPEN, ...config};
         const nodeList = document.querySelectorAll<HTMLElement>(`[${options.openAttribute}]`);
         const registeredMap = createRegisterMap(Array.from(nodeList), options.openAttribute);

@@ -3,11 +3,12 @@ export type ConfigType = {
     triggers?: HTMLElement[];
     openAttribute?: string;
     closeAttribute?: string;
+    openClass: string;
 };
 
 export type ModalType = {
-    open: () => void;
-    close: () => void;
+    open: (event?: Event) => void;
+    close: (event?: Event) => void;
 };
 
 export type ModalEdyType = {
@@ -19,5 +20,5 @@ export type ConstructorType = {
     triggers?: HTMLElement[];
     openAttribute?: string;
     closeAttribute?: string;
-    openClass: string;
+    openClass?: string;
 };
