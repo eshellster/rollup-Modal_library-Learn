@@ -27,7 +27,26 @@ export const ModalEdy = ((): ModalEdyType => {
             this.openAttribute = openAttribute;
             this.closeAttribute = closeAttribute;
             this.openClass = openClass;
+            this.registerNodes(triggers);
         }
+
+        /**
+         * * Add handlers for clicking on elements to open related modal windows
+         *
+         * @param {Array} nodeList - List of elements for opening modal windows
+         */
+        registerNodes(nodeList: HTMLElement[]) {
+            nodeList
+                .filter(Boolean)
+                .forEach((element) =>
+                    element.addEventListener('click', (event) => this.open(event)),
+                );
+        }
+        /**
+         *
+         * @param {Event} event - Event data
+         */
+        open(event: Event) {}
     }
 
     let modal: ModalType;
