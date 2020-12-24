@@ -1,8 +1,40 @@
-import {ConfigType} from './types';
+import {ATTRIBUTES} from './consts';
+import {ConfigType, ModalType, ModalEdyType, ConstructorType} from './types';
 
-export const ModalEdy = (() => {
+export const ModalEdy = ((): ModalEdyType => {
+    /**
+     * Modal window
+     */
+    class Modal {
+        $modal: HTMLElement | null;
+        openAttribute: string;
+        closeAttribute: string;
+        openClass: string;
+
+        /**
+         * Modal constructor
+         *
+         * @param {ConstructorType} param - Config
+         */
+        constructor({
+            selector = '',
+            triggers = [],
+            openAttribute = ATTRIBUTES.OPEN,
+            closeAttribute = ATTRIBUTES.CLOSE,
+            openClass = 'isOpen',
+        }: ConstructorType) {
+            this.$modal = document.querySelector(selector);
+            this.openAttribute = openAttribute;
+            this.closeAttribute = closeAttribute;
+            this.openClass = openClass;
+        }
+    }
+
+    let modal: ModalType;
+
     /**
      * Create a map for registering modal windows
+     *
      * @param {Array} nodeList - list of items
      * @param {string} attribute - selector for opening
      * @returns {Object} - nodes map
@@ -20,11 +52,12 @@ export const ModalEdy = (() => {
     };
     /**
      * Initialize modal windows according to markup
+     *
      * @param {ConfigType} config - madal window configur
      */
 
     const init = (config: ConfigType) => {
-        const options = {openAttribute: '', ...config};
+        const options = {openAttribute: ATTRIBUTES.OPEN, ...config};
         const nodeList = document.querySelectorAll<HTMLElement>(`[${options.openAttribute}]`);
         const registeredMap = createRegisterMap(Array.from(nodeList), options.openAttribute);
 
@@ -32,6 +65,7 @@ export const ModalEdy = (() => {
             const value = registeredMap[selector];
             options.selector = selector;
             options.triggers = [...value];
+            modal = new Modal(options);
         }
     };
     return {init};
