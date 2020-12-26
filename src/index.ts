@@ -1,4 +1,5 @@
-import {ConfigType, ModalEdyType, ModalType} from './types';
+import {ATTRIBUTES} from './consts';
+import {ConfigType, ModalType, ModalEdyType, ConstructorType} from './types';
 
 export const ModalEdy = ((): ModalEdyType => {
     /**
@@ -9,10 +10,11 @@ export const ModalEdy = ((): ModalEdyType => {
         openAttribute: string;
         closeAttribute: string;
         openClass: string;
+
         /**
          * Modal constructor
          *
-         * @param {ConfigType} param - config
+         * @param {ConstructorType} param - Config
          */
         constructor({
             selector = '',
@@ -20,36 +22,44 @@ export const ModalEdy = ((): ModalEdyType => {
             openAttribute = ATTRIBUTES.OPEN,
             closeAttribute = ATTRIBUTES.CLOSE,
             openClass = 'isOpen',
-        }: ConfigType) {
+        }: ConstructorType) {
             this.$modal = document.querySelector(selector);
             this.openAttribute = openAttribute;
             this.closeAttribute = closeAttribute;
             this.openClass = openClass;
-
             this.registerNodes(triggers);
+
             this.onClick = this.onClick.bind(this);
         }
+
         /**
-         * Add handlers for clicking on elements to open related modal windows
+         * * Add handlers for clicking on elements to open related modal windows
          *
-         * @param {Array} nodeList  - list of elements for opening modal windows
+         * @param {Array} nodeList - List of elements for opening modal windows
          */
         registerNodes(nodeList: HTMLElement[]) {
             nodeList
                 .filter(Boolean)
-                .forEach((element) => element.addEventListener('click', () => this.open()));
+                .forEach((element) =>
+                    element.addEventListener('click', (event) => this.open(event)),
+                );
         }
         /**
-         * Open moda window
+         *Open modal window
+         *
+         * @param {Event} event - Event data
          */
-        open() {
+        open(event?: Event) {
             this.$modal?.classList.add(this.openClass);
             this.addEventListeners();
         }
+
         /**
          * Close modal window
+         *
+         * @param {Object} event - Modal close
          */
-        close() {
+        close(event?: Event) {
             this.$modal?.classList.remove(this.openClass);
             this.removeEventListeners();
         }
@@ -57,11 +67,12 @@ export const ModalEdy = ((): ModalEdyType => {
         /**
          * Click handler
          *
-         * @param {object} event - Event data
+         * @param {Object} event - Event data
          */
         onClick(event: Event) {
-            if ((event.target as Element).closest(`[${this.closeAttribute}]`)) this.close();
+            if ((event.target as Element).closest(`[${this.closeAttribute}]`)) this.close(event);
         }
+
         /**
          * Add event listeners for an open modal
          */
@@ -79,38 +90,37 @@ export const ModalEdy = ((): ModalEdyType => {
         }
     }
 
-    const ATTRIBUTES = {
-        OPEN: 'data-ModalEdy-open',
-        CLOSE: 'data-ModalEdy-close',
-    };
-
     let modal: ModalType;
 
+    /**
+     * Create a map for registering modal windows
+     *
+     * @param {Array} nodeList - list of items
+     * @param {string} attribute - selector for opening
+     * @returns {Object} - nodes map
+     */
     const createRegisterMap = (nodeList: HTMLElement[], attribute: string) => {
-        // Accumulating an object where the key is the modal window selector, and the value is the element that will open the corresponding modal window
         return nodeList.reduce((acc: {[key: string]: HTMLElement[]}, element: HTMLElement): {
             [key: string]: HTMLElement[];
         } => {
-            // Get the value from the attribute
             const attributeValue = element.getAttribute(attribute);
-            // If there is no value, just skip the item
             if (!attributeValue) return acc;
-            // If the element is encountered for the first time, add it to the accumulator and write an empty array
             if (!acc[attributeValue]) acc[attributeValue] = [];
             acc[attributeValue].push(element);
             return acc;
         }, {});
     };
-
     /**
      * Initialize modal windows according to markup
      *
-     * @param {ConfigType} config - modal window configur
+     * @param {ConfigType} config - madal window configur
      */
+
     const init = (config?: ConfigType) => {
         const options = {openAttribute: ATTRIBUTES.OPEN, ...config};
         const nodeList = document.querySelectorAll<HTMLElement>(`[${options.openAttribute}]`);
         const registeredMap = createRegisterMap(Array.from(nodeList), options.openAttribute);
+
         for (const selector in registeredMap) {
             const value = registeredMap[selector];
             options.selector = selector;
@@ -118,7 +128,6 @@ export const ModalEdy = ((): ModalEdyType => {
             modal = new Modal(options);
         }
     };
-
     return {init};
 })();
 
