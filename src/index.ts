@@ -28,6 +28,8 @@ export const ModalEdy = ((): ModalEdyType => {
             this.closeAttribute = closeAttribute;
             this.openClass = openClass;
             this.registerNodes(triggers);
+
+            this.onClick = this.onClick.bind(this);
         }
 
         /**
@@ -43,18 +45,49 @@ export const ModalEdy = ((): ModalEdyType => {
                 );
         }
         /**
+         *Open modal window
          *
          * @param {Event} event - Event data
          */
         open(event?: Event) {
             this.$modal?.classList.add(this.openClass);
+            this.addEventListeners();
         }
 
         /**
+         * Close modal window
          *
-         * @param {Event} event - Modal close
+         * @param {Object} event - Modal close
          */
-        close(event?: Event) {}
+        close(event?: Event) {
+            this.$modal?.classList.remove(this.openClass);
+            this.removeEventListeners();
+        }
+
+        /**
+         * Click handler
+         *
+         * @param {Object} event - Event data
+         */
+        onClick(event: Event) {
+            if ((event.target as Element).closest(`[${this.closeAttribute}]`)) this.close(event);
+        }
+
+        /**
+         * Add event listeners for an open modal
+         */
+        addEventListeners() {
+            this.$modal?.addEventListener('touchstart', this.onClick);
+            this.$modal?.addEventListener('click', this.onClick);
+        }
+
+        /**
+         * Remove event listener for an open modal
+         */
+        removeEventListeners() {
+            this.$modal?.removeEventListener('touchstart', this.onClick);
+            this.$modal?.removeEventListener('click', this.onClick);
+        }
     }
 
     let modal: ModalType;
