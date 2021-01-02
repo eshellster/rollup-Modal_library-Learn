@@ -5,7 +5,7 @@ import babel from '@rollup/plugin-babel';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
 
-import pkg from './package.json';
+import pkg from '../../package.json';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -13,12 +13,12 @@ export default {
     input: 'src/index.ts',
     output: [
         {
-            file: pkg.main,
+            file: `./example/${pkg.main}`,
             format: 'umd',
             name: 'modal-edy',
         },
         {
-            file: pkg.module,
+            file: `./example/${pkg.module}`,
             format: 'es',
             name: 'modal-edy',
         },

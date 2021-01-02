@@ -44,7 +44,7 @@
         "build": "yarn build:clean && yarn build:lib",
         "build:clean": "rimraf dist",
         "build:lib": "rollup --config config/rollup/rollup.config.lib.js",
-        "build:dev": "rollup --config config/rollup/rollup.config.dev.js -w"
+        "build:dev": "rimraf example/dist && rollup --config config/rollup/rollup.config.dev.js -w"
     },
     "devDependencies": {
         "@babel/core": "^7.12.10",
