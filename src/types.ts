@@ -4,6 +4,11 @@ export type ConfigType = {
     openAttribute?: string;
     closeAttribute?: string;
     openClass: string;
+    scrollBehavior?: {
+        isDisabled?: boolean;
+        container?: string;
+        defaultValue?: string;
+    };
 };
 
 export type ModalType = {
@@ -24,4 +29,9 @@ export type ConstructorType = {
     openAttribute?: string;
     closeAttribute?: string;
     openClass?: string;
+    scrollBehavior?: {
+        isDisabled?: boolean;
+        container?: string;
+        defaultValue?: string;
+    };
 };

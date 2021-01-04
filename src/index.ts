@@ -1,4 +1,4 @@
-import {ATTRIBUTES} from './consts';
+import {ATTRIBUTES, SCROLL_STATE} from './consts';
 import {ConfigType, ModalType, ModalEdyType, ConstructorType} from './types';
 
 export const ModalEdy = ((): ModalEdyType => {
@@ -10,6 +10,11 @@ export const ModalEdy = ((): ModalEdyType => {
         openAttribute: string;
         closeAttribute: string;
         openClass: string;
+        scrollBehavior: {
+            isDisabled: boolean;
+            container: string;
+            defaultValue: string;
+        };
         /**
          * Modal constructor
          *
@@ -21,14 +26,20 @@ export const ModalEdy = ((): ModalEdyType => {
             openAttribute = ATTRIBUTES.OPEN,
             closeAttribute = ATTRIBUTES.CLOSE,
             openClass = 'isOpen',
+            scrollBehavior = {},
         }: ConstructorType) {
             this.$modal = document.querySelector(selector);
             this.openAttribute = openAttribute;
             this.closeAttribute = closeAttribute;
             this.openClass = openClass;
             this.registerNodes(triggers);
-
             this.onClick = this.onClick.bind(this);
+            this.scrollBehavior = {
+                isDisabled: true,
+                container: 'body',
+                defaultValue: '',
+                ...scrollBehavior,
+            };
         }
 
         /**
@@ -51,6 +62,7 @@ export const ModalEdy = ((): ModalEdyType => {
          */
         open(event?: Event) {
             this.$modal?.classList.add(this.openClass);
+            this.changeScrollBehavior(SCROLL_STATE.DISABLE);
             this.addEventListeners();
         }
 
@@ -61,6 +73,7 @@ export const ModalEdy = ((): ModalEdyType => {
          */
         close(event?: Event) {
             this.$modal?.classList.remove(this.openClass);
+            this.changeScrollBehavior(SCROLL_STATE.ENABLE);
             this.removeEventListeners();
         }
 
@@ -99,6 +112,20 @@ export const ModalEdy = ((): ModalEdyType => {
             if (!element) return;
             this.$modal = element;
             this.close();
+        }
+
+        /**
+         * Change scroll behavior
+         *
+         * @param {string} value - Scroll state value
+         */
+        changeScrollBehavior(value: 'disable' | 'enable') {
+            if (!this.scrollBehavior.isDisabled) return;
+            const element = document.querySelector<HTMLElement>(this.scrollBehavior.container);
+            if (!element) return;
+            if (value === SCROLL_STATE.ENABLE)
+                element.style.overflow = this.scrollBehavior.defaultValue;
+            else if (value === SCROLL_STATE.DISABLE) element.style.overflow = 'hidden';
         }
     }
 
