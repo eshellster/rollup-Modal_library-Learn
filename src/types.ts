@@ -9,10 +9,13 @@ export type ConfigType = {
 export type ModalType = {
     open: (event?: Event) => void;
     close: (event?: Event) => void;
+    closeBySelector: (selector: string) => void;
 };
 
 export type ModalEdyType = {
     init: (config?: ConfigType) => void;
+    open: (selector: string, config?: ConfigType) => void;
+    close: (selector?: string) => void;
 };
 
 export type ConstructorType = {

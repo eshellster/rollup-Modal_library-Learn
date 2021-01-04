@@ -26,7 +26,7 @@ module.exports = {
                 },
             },
         ],
-        'no-console': 'error',
+        'no-console': 'off',
     },
     overrides: [
         {

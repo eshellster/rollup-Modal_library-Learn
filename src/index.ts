@@ -10,7 +10,6 @@ export const ModalEdy = ((): ModalEdyType => {
         openAttribute: string;
         closeAttribute: string;
         openClass: string;
-
         /**
          * Modal constructor
          *
@@ -39,7 +38,8 @@ export const ModalEdy = ((): ModalEdyType => {
          */
         registerNodes(nodeList: HTMLElement[]) {
             nodeList
-                .filter(Boolean)
+                .filter(Boolean) // null이나 undefind 제거 - 배열에서 null이나 undefind는 프로세서 흐름에 위험한 불순물이다.
+                // .filter((element)=>Boolean(element))  <-- 위와 정확히 동일
                 .forEach((element) =>
                     element.addEventListener('click', (event) => this.open(event)),
                 );
@@ -88,9 +88,21 @@ export const ModalEdy = ((): ModalEdyType => {
             this.$modal?.removeEventListener('touchstart', this.onClick);
             this.$modal?.removeEventListener('click', this.onClick);
         }
+
+        /**
+         * Close modal window by selector
+         *
+         * @param {string} selector - Modal window selector to close
+         */
+        closeBySelector(selector: string) {
+            const element = document.querySelector<HTMLElement>(selector);
+            if (!element) return;
+            this.$modal = element;
+            this.close();
+        }
     }
 
-    let modal: ModalType;
+    let modal: ModalType; // 인스턴스를 여러개 생서하기 위한 방법
 
     /**
      * Create a map for registering modal windows
@@ -120,15 +132,39 @@ export const ModalEdy = ((): ModalEdyType => {
         const options = {openAttribute: ATTRIBUTES.OPEN, ...config};
         const nodeList = document.querySelectorAll<HTMLElement>(`[${options.openAttribute}]`);
         const registeredMap = createRegisterMap(Array.from(nodeList), options.openAttribute);
-
         for (const selector in registeredMap) {
             const value = registeredMap[selector];
             options.selector = selector;
             options.triggers = [...value];
             modal = new Modal(options);
+            console.log('modal', modal);
         }
     };
-    return {init};
+    /**
+     * Open modal window by selector
+     *
+     * @param {string} selector - Modal window selector
+     * @param {ConfigType} config - Modal window configuration
+     */
+    const open = (selector: string, config?: ConfigType) => {
+        const options = config || {};
+        modal = new Modal({...options, selector});
+        modal.open();
+    };
+
+    /**
+     * Close modal
+     *
+     * @param {string} selector - Modal window selector
+     */
+    const close = (selector?: string) => {
+        if (!modal) return;
+        setTimeout(() => {
+            selector ? modal.closeBySelector(selector) : modal.close();
+        }, 2000);
+    };
+
+    return {init, open, close};
 })();
 
 window.ModalEdy = ModalEdy;
