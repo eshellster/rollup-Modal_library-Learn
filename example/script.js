@@ -1,4 +1,3 @@
-ModalEdy.init();
-
-ModalEdy.open('#modal');
-ModalEdy.close('#modal');
+ModalEdy.init({
+    hasAnimation: true,
+});

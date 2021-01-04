@@ -1,4 +1,4 @@
-import {ATTRIBUTES, SCROLL_STATE} from './consts';
+import {ATTRIBUTES, CLASS_NAMES, SCROLL_STATE} from './consts';
 import {ConfigType, ModalType, ModalEdyType, ConstructorType} from './types';
 
 export const ModalEdy = ((): ModalEdyType => {
@@ -15,6 +15,7 @@ export const ModalEdy = ((): ModalEdyType => {
             container: string;
             defaultValue: string;
         };
+        hasAnimation: boolean;
         /**
          * Modal constructor
          *
@@ -27,6 +28,7 @@ export const ModalEdy = ((): ModalEdyType => {
             closeAttribute = ATTRIBUTES.CLOSE,
             openClass = 'isOpen',
             scrollBehavior = {},
+            hasAnimation = false,
         }: ConstructorType) {
             this.$modal = document.querySelector(selector);
             this.openAttribute = openAttribute;
@@ -40,6 +42,7 @@ export const ModalEdy = ((): ModalEdyType => {
                 defaultValue: '',
                 ...scrollBehavior,
             };
+            this.hasAnimation = hasAnimation;
         }
 
         /**
@@ -64,6 +67,21 @@ export const ModalEdy = ((): ModalEdyType => {
             this.$modal?.classList.add(this.openClass);
             this.changeScrollBehavior(SCROLL_STATE.DISABLE);
             this.addEventListeners();
+            this.preparationOpeningModal();
+        }
+
+        /**
+         * Preparing a modal window for opening
+         */
+        preparationOpeningModal() {
+            if (this.hasAnimation) {
+                this.$modal?.classList.add(CLASS_NAMES.IS_OPENING);
+                const handler = () => {
+                    this.$modal?.classList.remove(CLASS_NAMES.IS_OPENING);
+                    this.$modal?.removeEventListener('animationend', handler);
+                };
+                this.$modal?.addEventListener('animationend', handler);
+            }
         }
 
         /**
@@ -72,9 +90,27 @@ export const ModalEdy = ((): ModalEdyType => {
          * @param {Object} event - Modal close
          */
         close(event?: Event) {
-            this.$modal?.classList.remove(this.openClass);
+            // this.$modal?.classList.remove(this.openClass);
             this.changeScrollBehavior(SCROLL_STATE.ENABLE);
             this.removeEventListeners();
+            this.preparationClosingModal();
+        }
+
+        /**
+         * Preparing a modal window for closing
+         */
+        preparationClosingModal() {
+            if (this.hasAnimation) {
+                this.$modal?.classList.add(CLASS_NAMES.IS_CLOSING);
+                const handler = () => {
+                    this.$modal?.classList.remove(CLASS_NAMES.IS_CLOSING);
+                    this.$modal?.classList.remove(this.openClass);
+                    this.$modal?.removeEventListener('animationend', handler);
+                };
+                this.$modal?.addEventListener('animationend', handler);
+            } else {
+                this.$modal?.classList.remove(this.openClass);
+            }
         }
 
         /**
@@ -186,9 +222,7 @@ export const ModalEdy = ((): ModalEdyType => {
      */
     const close = (selector?: string) => {
         if (!modal) return;
-        setTimeout(() => {
-            selector ? modal.closeBySelector(selector) : modal.close();
-        }, 2000);
+        selector ? modal.closeBySelector(selector) : modal.close();
     };
 
     return {init, open, close};

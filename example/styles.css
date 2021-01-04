@@ -1,96 +1,152 @@
 :root {
-  --gallery: #eee;
-  --bright-gray: #1f1f1f;
-  --pink-swan: #c3bbbb;
-  --white-rgba: rgba(192, 192, 192, 0.6);
-  --gallery-rgba: rgba(238, 238, 238, 0.4);
+    --gallery: #eee;
+    --bright-gray: #1f1f1f;
+    --pink-swan: #c3bbbb;
+    --white-rgba: rgba(192, 192, 192, 0.6);
+    --gallery-rgba: rgba(238, 238, 238, 0.4);
+    --animation: cubic-bezier(0.66, 0.28, 0.09, 0.53);
 }
 
 body {
-  min-width: 100vw;
-  min-height: 100vh;
-  text-align: center;
-  font-family: Helvetica;
+    min-width: 100vw;
+    min-height: 100vh;
+    text-align: center;
+    font-family: Helvetica;
 }
 
 svg,
 img {
-  max-width: 100%;
+    max-width: 100%;
 }
 
 .modal {
-  display: none;
+    display: none;
 }
 
 .modal.isOpen {
-  display: block;
+    display: block;
 }
 
+.modal.isOpening {
+    animation: fadeIn 0.35s var(--animation);
+}
+
+.modal.isOpening .modal__container {
+    animation: downUp 0.35s var(--animation);
+}
+
+@keyframes downUp {
+    0% {
+        transform: translateY(8%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.modal.isClosing {
+    animation: fadeOut 0.35s var(--animation);
+}
+
+.modal.isClosing .modal__container {
+    animation: centerUp 0.35s var(--animation);
+}
+
+@keyframes centerUp {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-8%);
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
 .modal__button {
-  margin: 150px 0;
-  padding: 15px 40px;
-  color: var(--bright-gray);
-  background-color: var(--gallery);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+    margin: 150px 0;
+    padding: 15px 40px;
+    color: var(--bright-gray);
+    background-color: var(--gallery);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .modal__button--close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  width: 40px;
-  height: 40px;
-  padding: 7px;
-  margin: 0;
-  font-size: 0;
-  background-color: transparent;
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    padding: 7px;
+    margin: 0;
+    font-size: 0;
+    background-color: transparent;
 }
 
 .modal__button--close path {
-  fill: var(--gallery-rgba);
+    fill: var(--gallery-rgba);
 }
 
 .modal__link {
-  color: var(--pink-swan);
+    color: var(--pink-swan);
 }
 
 .modal__overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--white-rgba);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white-rgba);
 }
 
 .modal__container {
-  position: relative;
-  width: 100%;
-  max-width: 440px;
-  max-height: 100vh;
-  margin: 0 10px;
-  background-color: var(--bright-gray);
-  border-radius: 5px;
-  color: var(--gallery);
-  overflow-y: auto;
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    max-height: 100vh;
+    margin: 0 10px;
+    background-color: var(--bright-gray);
+    border-radius: 5px;
+    color: var(--gallery);
+    overflow-y: auto;
 }
 
 .modal__wrapper {
-  padding: 55px;
+    padding: 55px;
 }
 
 .modal__title {
-  margin: 0 0 20px;
-  font-size: 23px;
+    margin: 0 0 20px;
+    font-size: 23px;
 }
 
 .modal__desc {
-  margin: 0 0 25px;
-  line-height: 1.65;
+    margin: 0 0 25px;
+    line-height: 1.65;
 }

@@ -9,12 +9,15 @@ export type ConfigType = {
         container?: string;
         defaultValue?: string;
     };
+    hasAnimation?: boolean;
 };
 
 export type ModalType = {
     open: (event?: Event) => void;
     close: (event?: Event) => void;
     closeBySelector: (selector: string) => void;
+    preparationOpeningModal: () => void;
+    preparationClosingModal: () => void;
 };
 
 export type ModalEdyType = {
@@ -34,4 +37,5 @@ export type ConstructorType = {
         container?: string;
         defaultValue?: string;
     };
+    hasAnimation?: boolean;
 };
