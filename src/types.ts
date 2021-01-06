@@ -10,14 +10,16 @@ export type ConfigType = {
         defaultValue?: string;
     };
     hasAnimation?: boolean;
+    onOpen?: () => void;
+    onClose?: () => void;
+    beforeOpen?: () => boolean;
+    beforeClose?: () => boolean;
 };
 
 export type ModalType = {
-    open: (event?: Event) => void;
-    close: (event?: Event) => void;
+    open: () => void;
+    close: () => void;
     closeBySelector: (selector: string) => void;
-    preparationOpeningModal: () => void;
-    preparationClosingModal: () => void;
 };
 
 export type ModalEdyType = {
@@ -38,4 +40,8 @@ export type ConstructorType = {
         defaultValue?: string;
     };
     hasAnimation?: boolean;
+    onOpen?: () => void;
+    onClose?: () => void;
+    beforeOpen?: () => boolean;
+    beforeClose?: () => boolean;
 };
