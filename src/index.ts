@@ -33,9 +33,7 @@ export const ModalEdy = ((): ModalEdyType => {
             openClass = 'isOpen',
             scrollBehavior = {},
             hasAnimation = false,
-            onOpen = () => {
-                console.log('modal open');
-            },
+            onOpen = () => {},
             onClose = () => {},
             beforeOpen = () => true,
             beforeClose = () => true,
@@ -237,7 +235,6 @@ export const ModalEdy = ((): ModalEdyType => {
             options.selector = selector;
             options.triggers = [...value];
             modal = new Modal(options);
-            console.log('modal', modal);
         }
     };
     /**
