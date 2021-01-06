@@ -1,4 +1,4 @@
-import {ATTRIBUTES, CLASS_NAMES, SCROLL_STATE} from './consts';
+import {ATTRIBUTES, CLASS_NAMES, KEY, SCROLL_STATE} from './consts';
 import {ConfigType, ModalType, ModalEdyType, ConstructorType} from './types';
 
 export const ModalEdy = ((): ModalEdyType => {
@@ -46,6 +46,7 @@ export const ModalEdy = ((): ModalEdyType => {
             this.openClass = openClass;
             this.registerNodes(triggers);
             this.onClick = this.onClick.bind(this);
+            this.onKeyup = this.onKeyup.bind(this);
             this.scrollBehavior = {
                 isDisabled: true,
                 container: 'body',
@@ -149,11 +150,20 @@ export const ModalEdy = ((): ModalEdyType => {
         }
 
         /**
+         *
+         * @param {KeyboardEvent} event - KeyboardEvent
+         */
+        onKeyup(event: KeyboardEvent) {
+            if (event.key === KEY.ESCAPE || event.key === KEY.ESC) this.close(event);
+        }
+
+        /**
          * Add event listeners for an open modal
          */
         addEventListeners() {
             this.$modal?.addEventListener('touchstart', this.onClick);
             this.$modal?.addEventListener('click', this.onClick);
+            document.addEventListener('keyup', this.onKeyup);
         }
 
         /**
@@ -162,6 +172,7 @@ export const ModalEdy = ((): ModalEdyType => {
         removeEventListeners() {
             this.$modal?.removeEventListener('touchstart', this.onClick);
             this.$modal?.removeEventListener('click', this.onClick);
+            document.removeEventListener('keyup', this.onKeyup);
         }
 
         /**

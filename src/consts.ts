@@ -13,3 +13,10 @@ export const CLASS_NAMES = {
     IS_OPENING: 'isOpening',
     IS_CLOSING: 'isClosing',
 } as const;
+
+export const KEY = {
+    ESC: 'Esc',
+    ESCAPE: 'Escape',
+    CODE: 27,
+    TAB: 'Tab',
+} as const;
