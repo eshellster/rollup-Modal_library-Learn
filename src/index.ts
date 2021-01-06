@@ -145,6 +145,7 @@ export const ModalEdy = ((): ModalEdyType => {
          */
         onClick(event: Event) {
             if ((event.target as Element).closest(`[${this.closeAttribute}]`)) this.close(event);
+            if (!(event.target as Element).closest('.modal__wrapper')) this.close(event);
         }
 
         /**
