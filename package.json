@@ -40,8 +40,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "types": "tsc --noEmit",
         "lint": "eslint '*/**/*.{js,ts}'",
-        "finish": "yarn lint && yarn types",
-        "build": "yarn build:clean && yarn build:lib",
+        "finish": "npm run lint && npm run types",
+        "build": "npm run build:clean && npm run build:lib",
         "build:clean": "rimraf dist",
         "build:lib": "rollup --config config/rollup/rollup.config.lib.js",
         "build:dev": "rimraf example/dist && rollup --config config/rollup/rollup.config.dev.js -w"
