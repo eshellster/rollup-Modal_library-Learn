@@ -1,3 +1,25 @@
+# [1.5.0](https://github.com/eshellster/rollup-Modal_library-Learn/compare/v1.4.0...v1.5.0) (2021-01-07)
+
+
+### Bug Fixes
+
+* change package manager ([2e4b044](https://github.com/eshellster/rollup-Modal_library-Learn/commit/2e4b044d3151e57474e488c8ca5b52c0d6c3f344))
+* fixed roooup.config.dev.js ([884289d](https://github.com/eshellster/rollup-Modal_library-Learn/commit/884289db86c261317585324fe9db6a65035afc46))
+* log 삭제 ([8841276](https://github.com/eshellster/rollup-Modal_library-Learn/commit/884127662425e155c47e8de8faca929d1d103ee0))
+* 초간단 ([4b7ae0d](https://github.com/eshellster/rollup-Modal_library-Learn/commit/4b7ae0de79be683c75d426484a79589221eb4abe))
+
+
+### Features
+
+* added build for dev ([fa9a840](https://github.com/eshellster/rollup-Modal_library-Learn/commit/fa9a840f3acd6a8727f7aa7a394490939466b95f))
+* css animation ([250b406](https://github.com/eshellster/rollup-Modal_library-Learn/commit/250b40696bdf332ebacb5b35cbea3479343c761e))
+* esc키로 모달창 닫기 ([f101e55](https://github.com/eshellster/rollup-Modal_library-Learn/commit/f101e55e8a697fff1dc16fbb3dd51ac95bda932f))
+* installed rimraf ([c6ca718](https://github.com/eshellster/rollup-Modal_library-Learn/commit/c6ca7181482f636bd0953543a45ba705f09f1160))
+* 모달 open() close() ([81c9d9b](https://github.com/eshellster/rollup-Modal_library-Learn/commit/81c9d9b33fd95febda1bd0521e82985c190dfa76))
+* 모달 닫기 - 외곽 선택시 ([7e82431](https://github.com/eshellster/rollup-Modal_library-Learn/commit/7e82431d2607bd5844c774a48b7b57fb4cd5dfa5))
+* 모달 뒤의 윈도우 스크롤락 ([9594106](https://github.com/eshellster/rollup-Modal_library-Learn/commit/9594106c961806fac8e5d5b4cc49c285ce3bc956))
+* 콜백 추가 ([b9c395d](https://github.com/eshellster/rollup-Modal_library-Learn/commit/b9c395dd1286e475d01ae97983c57291f20ca74e))
+
 # [1.4.0](https://github.com/eshellster/rollup-Modal_library-Learn/compare/v1.3.0...v1.4.0) (2020-12-26)
 
 
