@@ -1,4 +1,4 @@
-import {ATTRIBUTES} from './consts';
+import {ATTRIBUTES, CLASS_NAMES, KEY, SCROLL_STATE} from './consts';
 import {ConfigType, ModalType, ModalEdyType, ConstructorType} from './types';
 
 export const ModalEdy = ((): ModalEdyType => {
@@ -10,7 +10,16 @@ export const ModalEdy = ((): ModalEdyType => {
         openAttribute: string;
         closeAttribute: string;
         openClass: string;
-
+        scrollBehavior: {
+            isDisabled: boolean;
+            container: string;
+            defaultValue: string;
+        };
+        hasAnimation: boolean;
+        onOpen: (event?: Event) => void;
+        onClose: (event?: Event) => void;
+        beforeOpen: (event?: Event) => boolean;
+        beforeClose: (event?: Event) => boolean;
         /**
          * Modal constructor
          *
@@ -22,14 +31,31 @@ export const ModalEdy = ((): ModalEdyType => {
             openAttribute = ATTRIBUTES.OPEN,
             closeAttribute = ATTRIBUTES.CLOSE,
             openClass = 'isOpen',
+            scrollBehavior = {},
+            hasAnimation = false,
+            onOpen = () => {},
+            onClose = () => {},
+            beforeOpen = () => true,
+            beforeClose = () => true,
         }: ConstructorType) {
             this.$modal = document.querySelector(selector);
             this.openAttribute = openAttribute;
             this.closeAttribute = closeAttribute;
             this.openClass = openClass;
             this.registerNodes(triggers);
-
             this.onClick = this.onClick.bind(this);
+            this.onKeyup = this.onKeyup.bind(this);
+            this.scrollBehavior = {
+                isDisabled: true,
+                container: 'body',
+                defaultValue: '',
+                ...scrollBehavior,
+            };
+            this.hasAnimation = hasAnimation;
+            this.onOpen = onOpen;
+            this.onClose = onClose;
+            this.beforeOpen = beforeOpen;
+            this.beforeClose = beforeClose;
         }
 
         /**
@@ -39,7 +65,8 @@ export const ModalEdy = ((): ModalEdyType => {
          */
         registerNodes(nodeList: HTMLElement[]) {
             nodeList
-                .filter(Boolean)
+                .filter(Boolean) // null이나 undefind 제거 - 배열에서 null이나 undefind는 프로세서 흐름에 위험한 불순물이다.
+                // .filter((element)=>Boolean(element))  <-- 위와 정확히 동일
                 .forEach((element) =>
                     element.addEventListener('click', (event) => this.open(event)),
                 );
@@ -50,8 +77,31 @@ export const ModalEdy = ((): ModalEdyType => {
          * @param {Event} event - Event data
          */
         open(event?: Event) {
+            const isContinue = this.beforeOpen(event);
+            if (!isContinue) return;
             this.$modal?.classList.add(this.openClass);
+            this.changeScrollBehavior(SCROLL_STATE.DISABLE);
             this.addEventListeners();
+            this.preparationOpeningModal(event);
+        }
+
+        /**
+         * Preparing a modal window for opening
+         *
+         *  @param {Event} event - Event data
+         */
+        preparationOpeningModal(event?: Event) {
+            if (this.hasAnimation) {
+                this.$modal?.classList.add(CLASS_NAMES.IS_OPENING);
+                const handler = () => {
+                    this.$modal?.classList.remove(CLASS_NAMES.IS_OPENING);
+                    this.onOpen(event);
+                    this.$modal?.removeEventListener('animationend', handler);
+                };
+                this.$modal?.addEventListener('animationend', handler);
+            } else {
+                this.onOpen(event);
+            }
         }
 
         /**
@@ -60,8 +110,32 @@ export const ModalEdy = ((): ModalEdyType => {
          * @param {Object} event - Modal close
          */
         close(event?: Event) {
-            this.$modal?.classList.remove(this.openClass);
+            const isContinue = this.beforeClose(event);
+            if (!isContinue) return;
+            this.changeScrollBehavior(SCROLL_STATE.ENABLE);
             this.removeEventListeners();
+            this.preparationClosingModal(event);
+        }
+
+        /**
+         * Preparing a modal window for closing
+         *
+         *  @param {Object} event - Modal close
+         */
+        preparationClosingModal(event?: Event) {
+            if (this.hasAnimation) {
+                this.$modal?.classList.add(CLASS_NAMES.IS_CLOSING);
+                const handler = () => {
+                    this.$modal?.classList.remove(CLASS_NAMES.IS_CLOSING);
+                    this.$modal?.classList.remove(this.openClass);
+                    this.onClose(event);
+                    this.$modal?.removeEventListener('animationend', handler);
+                };
+                this.$modal?.addEventListener('animationend', handler);
+            } else {
+                this.$modal?.classList.remove(this.openClass);
+                this.onClose(event);
+            }
         }
 
         /**
@@ -71,6 +145,15 @@ export const ModalEdy = ((): ModalEdyType => {
          */
         onClick(event: Event) {
             if ((event.target as Element).closest(`[${this.closeAttribute}]`)) this.close(event);
+            if (!(event.target as Element).closest('.modal__wrapper')) this.close(event);
+        }
+
+        /**
+         *
+         * @param {KeyboardEvent} event - KeyboardEvent
+         */
+        onKeyup(event: KeyboardEvent) {
+            if (event.key === KEY.ESCAPE || event.key === KEY.ESC) this.close(event);
         }
 
         /**
@@ -79,6 +162,7 @@ export const ModalEdy = ((): ModalEdyType => {
         addEventListeners() {
             this.$modal?.addEventListener('touchstart', this.onClick);
             this.$modal?.addEventListener('click', this.onClick);
+            document.addEventListener('keyup', this.onKeyup);
         }
 
         /**
@@ -87,10 +171,37 @@ export const ModalEdy = ((): ModalEdyType => {
         removeEventListeners() {
             this.$modal?.removeEventListener('touchstart', this.onClick);
             this.$modal?.removeEventListener('click', this.onClick);
+            document.removeEventListener('keyup', this.onKeyup);
+        }
+
+        /**
+         * Close modal window by selector
+         *
+         * @param {string} selector - Modal window selector to close
+         */
+        closeBySelector(selector: string) {
+            const element = document.querySelector<HTMLElement>(selector);
+            if (!element) return;
+            this.$modal = element;
+            this.close();
+        }
+
+        /**
+         * Change scroll behavior
+         *
+         * @param {string} value - Scroll state value
+         */
+        changeScrollBehavior(value: 'disable' | 'enable') {
+            if (!this.scrollBehavior.isDisabled) return;
+            const element = document.querySelector<HTMLElement>(this.scrollBehavior.container);
+            if (!element) return;
+            if (value === SCROLL_STATE.ENABLE)
+                element.style.overflow = this.scrollBehavior.defaultValue;
+            else if (value === SCROLL_STATE.DISABLE) element.style.overflow = 'hidden';
         }
     }
 
-    let modal: ModalType;
+    let modal: ModalType; // 인스턴스를 여러개 생서하기 위한 방법
 
     /**
      * Create a map for registering modal windows
@@ -120,7 +231,6 @@ export const ModalEdy = ((): ModalEdyType => {
         const options = {openAttribute: ATTRIBUTES.OPEN, ...config};
         const nodeList = document.querySelectorAll<HTMLElement>(`[${options.openAttribute}]`);
         const registeredMap = createRegisterMap(Array.from(nodeList), options.openAttribute);
-
         for (const selector in registeredMap) {
             const value = registeredMap[selector];
             options.selector = selector;
@@ -128,7 +238,29 @@ export const ModalEdy = ((): ModalEdyType => {
             modal = new Modal(options);
         }
     };
-    return {init};
+    /**
+     * Open modal window by selector
+     *
+     * @param {string} selector - Modal window selector
+     * @param {ConfigType} config - Modal window configuration
+     */
+    const open = (selector: string, config?: ConfigType) => {
+        const options = config || {};
+        modal = new Modal({...options, selector});
+        modal.open();
+    };
+
+    /**
+     * Close modal
+     *
+     * @param {string} selector - Modal window selector
+     */
+    const close = (selector?: string) => {
+        if (!modal) return;
+        selector ? modal.closeBySelector(selector) : modal.close();
+    };
+
+    return {init, open, close};
 })();
 
 window.ModalEdy = ModalEdy;

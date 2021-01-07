@@ -26,7 +26,13 @@ module.exports = {
                 },
             },
         ],
-        'no-console': 'error',
+        'no-console': 'off',
+        'prettier/prettier': [
+            'error',
+            {
+                endOfLine: 'auto',
+            },
+        ],
     },
     overrides: [
         {

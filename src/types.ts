@@ -4,15 +4,28 @@ export type ConfigType = {
     openAttribute?: string;
     closeAttribute?: string;
     openClass: string;
+    scrollBehavior?: {
+        isDisabled?: boolean;
+        container?: string;
+        defaultValue?: string;
+    };
+    hasAnimation?: boolean;
+    onOpen?: () => void;
+    onClose?: () => void;
+    beforeOpen?: () => boolean;
+    beforeClose?: () => boolean;
 };
 
 export type ModalType = {
-    open: (event?: Event) => void;
-    close: (event?: Event) => void;
+    open: () => void;
+    close: () => void;
+    closeBySelector: (selector: string) => void;
 };
 
 export type ModalEdyType = {
     init: (config?: ConfigType) => void;
+    open: (selector: string, config?: ConfigType) => void;
+    close: (selector?: string) => void;
 };
 
 export type ConstructorType = {
@@ -21,4 +34,14 @@ export type ConstructorType = {
     openAttribute?: string;
     closeAttribute?: string;
     openClass?: string;
+    scrollBehavior?: {
+        isDisabled?: boolean;
+        container?: string;
+        defaultValue?: string;
+    };
+    hasAnimation?: boolean;
+    onOpen?: () => void;
+    onClose?: () => void;
+    beforeOpen?: () => boolean;
+    beforeClose?: () => boolean;
 };
