@@ -40,26 +40,26 @@
 
 ```bash
 # With npm
-npm i keukenhof
+npm i modal-edy
 ![modal](https://user-images.githubusercontent.com/5045011/110337040-d1381600-8068-11eb-95d1-17525caa2ba1.png)
 
 # With Yarn
-yarn add keukenhof
+yarn add modal-edy
 ```
 
 ### CDN
 
 ```html
-<script src="https://unpkg.com/keukenhof"></script>
+<script src="https://unpkg.com/modal-edy"></script>
 ```
 
 ## Usage
 
-Part of the preparation of the library work is hidden, you just need to create a layout. There are no restrictions on the layout of your modal window, you just need to add `data-modalEdy-open` to the value of which you need to specify the selector of the window that should open on click and `data-keukenhof-close` for the element that should close the currently active modal
+Part of the preparation of the library work is hidden, you just need to create a layout. There are no restrictions on the layout of your modal window, you just need to add `data-modalEdy-open` to the value of which you need to specify the selector of the window that should open on click and `data-modalEdy-close` for the element that should close the currently active modal
 
 ```html
 <!DOCTYPE html>
-<title>Keukenhof.js modal example</title>
+<title>modal-edy.js modal example</title>
 
 <style>
     #modal {
@@ -71,7 +71,7 @@ Part of the preparation of the library work is hidden, you just need to create a
     }
 </style>
 
-<button data-keukenhof-open="#modal">Open modal</button>
+<button data-modalEdy-open="#modal">Open modal</button>
 
 <!-- Main modal wrapper with required id -->
 <div id="modal" role="dialog" aria-hidden="true" aria-labelledby="title" aria-describedby="desc">
@@ -80,12 +80,12 @@ Part of the preparation of the library work is hidden, you just need to create a
 
     <header>
         <!-- Button to close the modal window -->
-        <button class="close" aria-label="Close modal" data-keukenhof-close>Close</button>
+        <button class="close" aria-label="Close modal" data-modalEdy-close>Close</button>
     </header>
 
     <!-- Body used to improve a11y by describing the purpose of the modal -->
     <main>
-        <h2 id="title">Keukenhof.js modal</h2>
+        <h2 id="title">modal-edy.js modal</h2>
         <p id="desc">Lightweight and easy to use the library for modals</p>
     </main>
 </div>
@@ -93,13 +93,13 @@ Part of the preparation of the library work is hidden, you just need to create a
 <script src="https://unpkg.com/modal-edy"></script>
 
 <script>
-    Keukenhof.init();
+    ModalEdy.init();
 </script>
 ```
 
 ### Module bundlers
 
-An alternative connection option is to use import `Keukenhof.js`
+An alternative connection option is to use import `modalEdy.js`
 
 ```js
 import {ModalEdy} from 'modal-edy';
@@ -120,7 +120,7 @@ ModalEdy.close();
 
 ## Docs
 
-The documentation can also be found on the [Keukenhof.js website](https://keukenhof.netlify.app/#options)
+The documentation can also be found on the [modal-edy.js website](https://keukenhof.netlify.app/#options)
 
 | Options          | Type     | Description                                                                                                                                                                                                           |
 | ---------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
